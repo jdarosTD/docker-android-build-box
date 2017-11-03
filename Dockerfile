@@ -3,12 +3,8 @@ FROM ubuntu:17.10
 MAINTAINER Hien Nguyen
 
 ENV ANDROID_HOME="/opt/android-sdk" \
-    ANDROID_NDK="/opt/android-ndk" \
-    ANDROID_NDK_HOME="/opt/android-ndk" \
 # Get the latest version from https://developer.android.com/studio/index.html
     ANDROID_SDK_TOOLS_VERSION="3859397" \
-# Get the latest version from https://developer.android.com/ndk/downloads/index.html
-    ANDROID_NDK_VERSION="15c" \
 # nodejs version
     NODE_VERSION="8.x" \
 # Set locale
@@ -17,7 +13,7 @@ ENV ANDROID_HOME="/opt/android-sdk" \
     LC_ALL="en_US.UTF-8" \
     DEBIAN_FRONTEND="noninteractive" \
     ANDROID_SDK_HOME="$ANDROID_HOME" \
-    PATH="$PATH:$ANDROID_SDK_HOME/tools:$ANDROID_SDK_HOME/platform-tools:$ANDROID_NDK" \
+    PATH="$PATH:$ANDROID_SDK_HOME/tools:$ANDROID_SDK_HOME/platform-tools" \
     JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64/ \
     TERM=dumb \
     DEBIAN_FRONTEND=noninteractive
@@ -83,12 +79,6 @@ RUN echo "installing sdk tools" && \
     mkdir --parents "$ANDROID_HOME" && \
     unzip -q sdk-tools.zip -d "$ANDROID_HOME" && \
     rm --force sdk-tools.zip && \
-    echo "installing ndk" && \
-    wget --quiet --output-document=android-ndk.zip \
-    "http://dl.google.com/android/repository/android-ndk-r${ANDROID_NDK_VERSION}-linux-x86_64.zip" && \
-    mkdir --parents "$ANDROID_NDK/android-ndk-r${ANDROID_NDK_VERSION}" && \
-    unzip -q android-ndk.zip -d "$ANDROID_NDK" && \
-    rm --force android-ndk.zip && \
 # Install SDKs
 # Please keep these in descending order!
 # The `yes` is for accepting all non-standard tool licenses.
@@ -114,7 +104,9 @@ RUN echo "installing sdk tools" && \
         "platform-tools" && \
     echo "installing build tools " && \
     yes | "$ANDROID_HOME"/tools/bin/sdkmanager \
-        "build-tools;26.0.2" "build-tools;26.0.1" "build-tools;26.0.0" \
+        "build-tools;26.0.2" \
+		"build-tools;26.0.1" \
+		"build-tools;26.0.0" && \
     echo "installing extras " && \
     yes | "$ANDROID_HOME"/tools/bin/sdkmanager \
         "extras;android;m2repository" \
