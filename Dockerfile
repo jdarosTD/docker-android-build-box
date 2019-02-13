@@ -1,6 +1,6 @@
 FROM ubuntu:17.10
 
-MAINTAINER Hien Nguyen
+MAINTAINER Jonathan DA ROS
 
 ENV ANDROID_HOME="/opt/android-sdk" \
 # Get the latest version from https://developer.android.com/studio/index.html
@@ -54,6 +54,7 @@ RUN apt-get update -qq > /dev/null && \
         unzip \
         wget \
         zip \
+	swig \
         zlib1g-dev > /dev/null && \
     echo "installing nodejs, npm, cordova, ionic, react-native" && \
     curl -sL -k https://deb.nodesource.com/setup_${NODE_VERSION} \
